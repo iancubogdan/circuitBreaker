@@ -21,7 +21,7 @@ public class SimpleCircuitBreakerAspect {
         try {
             returnedObject = joinPoint.proceed();
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
         System.out.println("NSA HERE: Phone line disconnected!");
         return returnedObject;

@@ -21,4 +21,14 @@ class SimpleCircuitBreakerTest {
         callerService.call();
     }
 
+    @Test
+    public void persistentCaller() {
+        for (int i = 0; i < 12; i++) {
+            if (i == 6) {
+                adeleService.setDoNotDisturb(true);
+            }
+            callerService.call();
+        }
+    }
+
 }
