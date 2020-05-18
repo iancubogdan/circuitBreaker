@@ -13,7 +13,7 @@ public class SimpleCircuitBreaker {
         Open, Closed
     }
 
-    private static int FAILURE_THRESHOLD = 5;
+    private static int FAILURE_THRESHOLD = 3;
     private int failureCount = 0;
     private LocalDateTime lastFailTime;
 
@@ -30,5 +30,13 @@ public class SimpleCircuitBreaker {
             return State.Open;
         }
         return State.Closed;
+    }
+
+    public boolean isOpen() {
+        return getState().equals(State.Open);
+    }
+
+    public boolean isClosed() {
+        return getState().equals(State.Closed);
     }
 }
