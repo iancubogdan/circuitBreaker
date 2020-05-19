@@ -25,14 +25,7 @@ class SimpleCircuitBreakerTest {
     public void persistentCaller() throws InterruptedException {
         for (int i = 0; i < 20; i++) {
             System.out.println("________________________________________________\n" + "Call #" + i );
-            if (i == 3) {
-                adeleService.setDoNotDisturb(true);
-            }
 
-            if (i == 13) {
-                Thread.sleep(1002);
-                adeleService.setDoNotDisturb(false);
-            }
             callerService.call();
         }
     }

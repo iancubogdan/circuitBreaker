@@ -16,12 +16,12 @@ public class SimpleCircuitBreakerAspect {
 
     @Around("@annotation(com.patterns.circuitbreaker.custombuilt.MyCircuitBreaker)")
     public Object advice(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("NSA HERE: Phone line is tapped!");
+//        System.out.println("NSA HERE: Phone line is tapped!");
         Object returnedObject = null;
 
         returnedObject = joinPoint.proceed();
 
-        System.out.println("NSA HERE: Phone line disconnected!");
+//        System.out.println("NSA HERE: Phone line disconnected!");
         return returnedObject;
     }
 }
