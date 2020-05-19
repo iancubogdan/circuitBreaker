@@ -12,12 +12,14 @@ import java.util.function.Supplier;
 
 public class Resilience {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
                 .failureRateThreshold(5)
                 .minimumNumberOfCalls(4)
                 .recordExceptions(Throwable.class)
+                .waitDurationInOpenState(Duration.ofMillis(15))
+                .permittedNumberOfCallsInHalfOpenState(1)
                 .build();
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(circuitBreakerConfig);
 
@@ -28,6 +30,15 @@ public class Resilience {
             System.out.println("________________________________________________\n" + "Call #" + i );
             Supplier<String> decorated = CircuitBreaker.decorateSupplier(cb, () -> adeleService.answerBack());
             String result = Try.ofSupplier(decorated).recover(throwable -> "Better luck next time").get();
+
+            if (i == 5) {
+                adeleService.setDoNotDisturb(true);
+            }
+
+            if (i == 8) {
+                Thread.sleep(20);
+                adeleService.setDoNotDisturb(false);
+            }
 
             System.out.println(result);
         }

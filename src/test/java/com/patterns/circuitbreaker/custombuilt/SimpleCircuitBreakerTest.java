@@ -26,6 +26,15 @@ class SimpleCircuitBreakerTest {
         for (int i = 0; i < 20; i++) {
             System.out.println("________________________________________________\n" + "Call #" + i );
 
+            if (i == 5) {
+                adeleService.setDoNotDisturb(true);
+            }
+
+            if (i == 12) {
+                Thread.sleep(10);
+                adeleService.setDoNotDisturb(false);
+            }
+
             callerService.call();
         }
     }
