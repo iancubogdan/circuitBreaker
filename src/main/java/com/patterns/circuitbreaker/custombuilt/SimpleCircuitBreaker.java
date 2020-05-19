@@ -15,7 +15,6 @@ public class SimpleCircuitBreaker {
 
     private static int FAILURE_THRESHOLD = 3;
     private int failureCount = 0;
-    private LocalDateTime lastFailTime;
 
     public void recordFailure() {
         failureCount++;
