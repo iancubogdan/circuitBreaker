@@ -18,6 +18,7 @@ public class SimpleCircuitBreaker {
 
     public void recordFailure() {
         failureCount++;
+        System.out.println("Recorded failure, current count is: " + failureCount);
     }
 
     public void reset() {
@@ -26,8 +27,10 @@ public class SimpleCircuitBreaker {
 
     public State getState() {
         if (failureCount > FAILURE_THRESHOLD) {
+            System.out.println("CB State: Open");
             return State.Open;
         }
+        System.out.println("CB State: Closed");
         return State.Closed;
     }
 
