@@ -15,9 +15,11 @@ public class Resilience {
     public static void main(String[] args) {
 
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
-                .failureRateThreshold(5)
+                .failureRateThreshold(50)
                 .minimumNumberOfCalls(4)
                 .recordExceptions(Throwable.class)
+                .permittedNumberOfCallsInHalfOpenState(2)
+                .waitDurationInOpenState(Duration.ofMillis(15))
                 .build();
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.of(circuitBreakerConfig);
 
@@ -26,6 +28,15 @@ public class Resilience {
 
         for (int i = 0; i < 30; i++) {
             System.out.println("________________________________________________\n" + "Call #" + i );
+
+            if (i == 4) {
+                adeleService.setDoNotDisturb(true);
+            }
+
+            if (i == 11) {
+                adeleService.setDoNotDisturb(false);
+            }
+
             Supplier<String> decorated = CircuitBreaker.decorateSupplier(cb, () -> adeleService.answerBack());
             String result = Try.ofSupplier(decorated).recover(throwable -> "Better luck next time").get();
 
